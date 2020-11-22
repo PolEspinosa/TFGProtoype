@@ -59,4 +59,14 @@ public class SpiritBehavior : MonoBehaviour
                 break;
         }
     }
+
+    public void GoTo()
+    {
+        state = States.GOING;
+    }
+
+    public void Follow()
+    {
+        state = States.FOLLOWING;
+    }
 }

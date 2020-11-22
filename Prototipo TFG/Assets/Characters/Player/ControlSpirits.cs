@@ -14,7 +14,8 @@ public class ControlSpirits : MonoBehaviour
     private Ray ray;
     //position the player has ordered the spirit to go to
     public Vector3 goToPosition;
-    private SpiritBehavior spiritBehavior;
+    private GameObject currentSpirit;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -62,12 +63,13 @@ public class ControlSpirits : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100))
             {
                 goToPosition = hit.point;
+                currentSpirit.GetComponent<SpiritBehavior>().GoTo();
             }
         }
         //make the spirit follow
         else if(!aiming && Input.GetMouseButtonDown(0))
         {
-
+            currentSpirit.GetComponent<SpiritBehavior>().Follow();
         }
     }
     //manage spirit invokation 
@@ -80,10 +82,13 @@ public class ControlSpirits : MonoBehaviour
             if (_cloneSpirit2 != null) Destroy(_cloneSpirit2);
             else if (_cloneSpirit3 != null) Destroy(_cloneSpirit3);
             else if (_cloneSpirit4 != null) Destroy(_cloneSpirit4);
+            currentSpirit = _cloneSpirit;
         }
         else
         {
             Destroy(_cloneSpirit);
+            currentSpirit = null;
         }
+        
     }
 }
