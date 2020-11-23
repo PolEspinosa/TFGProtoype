@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class SpiritBehavior : MonoBehaviour
 {
-    private NavMeshAgent navAgent;
+    protected NavMeshAgent navAgent;
     private GameObject player;
     private Vector3 target;
     public enum States { FOLLOWING, GOING}; //Follow the player/Go to where the player has said
@@ -14,6 +14,7 @@ public class SpiritBehavior : MonoBehaviour
     public float stopDistance = 2f;
     //reference to the players script
     private ControlSpirits controlSpirits;
+    public GameObject targetObject; //we will store the gameobject that has collided with the raycast
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +35,7 @@ public class SpiritBehavior : MonoBehaviour
         target = player.transform.position;
         state = States.FOLLOWING;
         controlSpirits = player.GetComponent<ControlSpirits>();
+        targetObject = null;
     }
 
     protected void FollowOrder()

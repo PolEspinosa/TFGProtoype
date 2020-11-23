@@ -15,4 +15,17 @@ public class WindSpiritBehavior : SpiritBehavior
     {
         FollowOrder();
     }
+
+    private void DoAction()
+    {
+        if (Vector3.Distance(gameObject.transform.position, targetObject.transform.position) <= navAgent.stoppingDistance)
+        {
+            switch (targetObject.tag)
+            {
+                case "Vent":
+                    
+                    break;
+            }
+        }
+    }
 }

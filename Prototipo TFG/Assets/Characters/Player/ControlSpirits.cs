@@ -64,6 +64,7 @@ public class ControlSpirits : MonoBehaviour
             {
                 goToPosition = hit.point;
                 currentSpirit.GetComponent<SpiritBehavior>().GoTo();
+                currentSpirit.GetComponent<SpiritBehavior>().targetObject = hit.collider.gameObject;
             }
         }
         //make the spirit follow

@@ -14,5 +14,20 @@ public class FireSpiritBehavior : SpiritBehavior
     void Update()
     {
         FollowOrder();
+        DoAction();
+    }
+
+    private void DoAction()
+    {
+        if (Vector3.Distance(gameObject.transform.position,targetObject.transform.position) <= navAgent.stoppingDistance)
+        {
+            switch (targetObject.tag)
+            {
+                case "Bush":
+                    Destroy(targetObject);
+                    targetObject = null;
+                    break;
+            }
+        }
     }
 }
