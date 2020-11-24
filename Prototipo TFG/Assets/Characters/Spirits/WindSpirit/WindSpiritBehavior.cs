@@ -14,18 +14,16 @@ public class WindSpiritBehavior : SpiritBehavior
     void Update()
     {
         FollowOrder();
-        DoAction();
     }
 
-    private void DoAction()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Vector3.Distance(gameObject.transform.position, targetObject.transform.position) <= navAgent.stoppingDistance + 1)
+        if (other.CompareTag("Vent"))
         {
-            switch (targetObject.tag)
+            if(state == States.GOING)
             {
-                case "Vent":
-                    
-                    break;
+                other.gameObject.GetComponent<VentBehavior>().activated = true;
+                other.gameObject.GetComponent<MeshRenderer>().material = other.gameObject.GetComponent<VentBehavior>().onMat;
             }
         }
     }

@@ -14,18 +14,16 @@ public class FireSpiritBehavior : SpiritBehavior
     void Update()
     {
         FollowOrder();
-        DoAction();
     }
 
-    private void DoAction()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Vector3.Distance(gameObject.transform.position,targetObject.transform.position) <= navAgent.stoppingDistance)
+        if(state == States.GOING)
         {
-            switch (targetObject.tag)
+            switch (other.tag)
             {
                 case "Bush":
-                    Destroy(targetObject);
-                    targetObject = null;
+                    Destroy(other.gameObject);
                     break;
             }
         }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class CurrentCreation : MonoBehaviour
 {
-    public float ventSpeed = 1;
+    public float ventForce = 3;
+    private Vector3 direction;
     // Start is called before the first frame update
     void Start()
     {
-        
+        direction = gameObject.transform.up;
     }
 
     // Update is called once per frame
@@ -21,7 +22,23 @@ public class CurrentCreation : MonoBehaviour
     {
         if (gameObject.GetComponentInParent<VentBehavior>().activated)
         {
-            other.gameObject.transform.position += new Vector3(0, ventSpeed, 0) * Time.deltaTime;
+            if (other.gameObject.CompareTag("Cube"))
+            {
+                other.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                other.gameObject.GetComponent<Rigidbody>().AddForce(direction * ventForce);
+            }
+            if (other.gameObject.CompareTag("Player"))
+            {
+
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Cube"))
+        {
+            other.gameObject.GetComponent<Rigidbody>().useGravity = true;
         }
     }
 }

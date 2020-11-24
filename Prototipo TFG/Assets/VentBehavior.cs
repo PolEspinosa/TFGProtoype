@@ -53,17 +53,7 @@ public class VentBehavior : MonoBehaviour
     {
         if (other.CompareTag("WindSpirit"))
         {
-            activated = true;
             hasSpirit = true;
-            meshRenderer.material = onMat;
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("WindSpirit"))
-        {
-
         }
     }
 

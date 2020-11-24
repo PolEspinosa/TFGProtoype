@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 1817935243939613568}
   - component: {fileID: 162167371375822315}
   - component: {fileID: 5550074208348517944}
+  - component: {fileID: 7222015492789462964}
   m_Layer: 0
   m_Name: EarthSpirit
-  m_TagString: Untagged
+  m_TagString: EarthSpirit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,7 +149,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  previousState: 0
   walkSpeed: 2
   runSpeed: 4
   stopDistance: 2
+  targetObject: {fileID: 0}
+--- !u!65 &7222015492789462964
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6963685507000868167}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 2, z: 3}
+  m_Center: {x: 0, y: 0, z: 0}

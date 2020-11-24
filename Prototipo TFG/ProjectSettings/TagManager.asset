@@ -7,6 +7,9 @@ TagManager:
   - Bush
   - Vent
   - WindSpirit
+  - Cube
+  - EarthSpirit
+  - GrowFloor
   layers:
   - Default
   - TransparentFX
