@@ -14,11 +14,12 @@ public class WindSpiritBehavior : SpiritBehavior
     void Update()
     {
         FollowOrder();
+        DoAction();
     }
 
     private void DoAction()
     {
-        if (Vector3.Distance(gameObject.transform.position, targetObject.transform.position) <= navAgent.stoppingDistance)
+        if (Vector3.Distance(gameObject.transform.position, targetObject.transform.position) <= navAgent.stoppingDistance + 1)
         {
             switch (targetObject.tag)
             {

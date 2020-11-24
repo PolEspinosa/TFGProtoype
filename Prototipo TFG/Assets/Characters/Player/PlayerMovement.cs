@@ -13,10 +13,11 @@ public class PlayerMovement : MonoBehaviour
     public float turnSmoothTime;
     private float turnSmoothVelocity;
     public Transform cam;
+    public float gravity;
     // Start is called before the first frame update
     void Start()
     {
-        
+        gravity = 9.8f;
     }
 
     // Update is called once per frame
@@ -28,7 +29,8 @@ public class PlayerMovement : MonoBehaviour
         //set the direction we want to move to
         direction = new Vector3(axisX, 0, axisZ).normalized;
 
-        if(direction.magnitude >= 0.1f)
+
+        if (direction.magnitude >= 0.1f)
         {
             //find the angle the player needs to rotate in order to face the direction is moving to
             targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;

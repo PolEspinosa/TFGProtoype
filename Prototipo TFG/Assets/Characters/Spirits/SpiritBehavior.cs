@@ -70,5 +70,6 @@ public class SpiritBehavior : MonoBehaviour
     public void Follow()
     {
         state = States.FOLLOWING;
+        targetObject = null;
     }
 }
