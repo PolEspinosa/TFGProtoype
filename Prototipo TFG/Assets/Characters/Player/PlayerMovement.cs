@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
     public float walkSpeed;
-    public float jump;
+    public float jumpHeight;
     private float axisX, axisZ;
     private Vector3 direction, moveDirection;
     private float targetAngle, smoothAngle;
@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gravity = 9.8f;
+        gravity = -9.81f;
     }
 
     // Update is called once per frame
@@ -28,7 +28,6 @@ public class PlayerMovement : MonoBehaviour
         axisZ = Input.GetAxisRaw("Vertical");
         //set the direction we want to move to
         direction = new Vector3(axisX, 0, axisZ).normalized;
-
 
         if (direction.magnitude >= 0.1f)
         {

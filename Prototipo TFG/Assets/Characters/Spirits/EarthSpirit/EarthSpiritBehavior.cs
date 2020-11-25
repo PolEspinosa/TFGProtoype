@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EarthSpiritBehavior : SpiritBehavior
 {
+    public float journeyTime = 1.0f;
+    private float startTime;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,12 +25,22 @@ public class EarthSpiritBehavior : SpiritBehavior
             switch (other.tag)
             {
                 case "GrowFloor":
-                    if(other.gameObject.transform.localScale.y < other.gameObject.GetComponent<GrowFloor>().maxScale)
+                    if(Vector3.Distance(other.gameObject.transform.position,other.gameObject.GetComponent<GrowFloor>().newPosition) > 0)
                     {
-                        other.gameObject.transform.localScale += new Vector3(0, Time.deltaTime, 0);
+                        other.gameObject.transform.position += new Vector3(0, Time.deltaTime, 0);
                     }
                     break;
             }
         }
     }
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    switch (other.gameObject.tag)
+    //    {
+    //        case "GrowFloor":
+    //            other.gameObject.GetComponent<GrowFloor>().decrease = true;
+    //            break;
+    //    }
+    //}
 }

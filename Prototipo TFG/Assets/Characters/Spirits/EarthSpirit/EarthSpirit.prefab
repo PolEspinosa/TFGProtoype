@@ -153,6 +153,7 @@ MonoBehaviour:
   runSpeed: 4
   stopDistance: 2
   targetObject: {fileID: 0}
+  journeyTime: 1
 --- !u!65 &7222015492789462964
 BoxCollider:
   m_ObjectHideFlags: 0
