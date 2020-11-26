@@ -42,16 +42,13 @@ public class GrowFloor : MonoBehaviour
         }
     }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    switch (other.gameObject.tag)
-    //    {
-    //        case "Player":
-    //            other.gameObject.transform.parent = null;
-    //            break;
-    //        case "EarthSpirit":
-    //            decrease = true;
-    //            break;
-    //    }
-    //}
+    private void OnTriggerExit(Collider other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "Player":
+                other.gameObject.transform.parent = null;
+                break;
+        }
+    }
 }
