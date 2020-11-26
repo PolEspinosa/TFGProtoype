@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class FireSpiritBehavior : SpiritBehavior
 {
+    public GameObject spiritLight;
     // Start is called before the first frame update
     void Start()
     {
         InitialiseValues();
+        spiritLight.SetActive(false);
     }
 
     // Update is called once per frame
@@ -26,6 +28,18 @@ public class FireSpiritBehavior : SpiritBehavior
                     Destroy(other.gameObject);
                     break;
             }
+        }
+        if (other.CompareTag("DarkTrigger"))
+        {
+            spiritLight.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("DarkTrigger"))
+        {
+            spiritLight.SetActive(false);
         }
     }
 }

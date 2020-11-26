@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ControlSpirits : MonoBehaviour
 {
+    private LayerMask ignoreMask;
     //references to the spirits
     public GameObject fireSpirit, waterSpirit, earthSpirit, windSpirit;
     //instantiated object
