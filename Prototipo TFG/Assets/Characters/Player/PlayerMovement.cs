@@ -25,8 +25,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         //get the input value
-        axisX = Input.GetAxis("Horizontal");
-        axisZ = Input.GetAxis("Vertical");
+        axisX = Input.GetAxisRaw("Horizontal");
+        axisZ = Input.GetAxisRaw("Vertical");
         //store the y value before normalizing it
         yStore = moveDirection.y;
         //set the direction we want to move to
