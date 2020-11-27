@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ControlSpirits : MonoBehaviour
 {
-    private LayerMask ignoreMask;
+    public LayerMask ignoreMask;
     //references to the spirits
     public GameObject fireSpirit, waterSpirit, earthSpirit, windSpirit;
     //instantiated object
@@ -61,7 +61,7 @@ public class ControlSpirits : MonoBehaviour
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Physics.Raycast(ray, out hit, 100, ~ignoreMask))
             {
                 goToPosition = hit.point;
                 currentSpirit.GetComponent<SpiritBehavior>().GoTo();
