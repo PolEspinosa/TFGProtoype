@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class SpiritBehavior : MonoBehaviour
 {
     protected NavMeshAgent navAgent;
-    private GameObject player;
+    protected GameObject player;
     private Vector3 target;
     public enum States { FOLLOWING, GOING}; //Follow the player/Go to where the player has said
     public States state;
