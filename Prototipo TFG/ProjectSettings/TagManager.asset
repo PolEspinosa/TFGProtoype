@@ -12,6 +12,8 @@ TagManager:
   - DarkTrigger
   - Burnable
   - NavMeshSurface
+  - Torch
+  - FireActivable
   layers:
   - Default
   - TransparentFX

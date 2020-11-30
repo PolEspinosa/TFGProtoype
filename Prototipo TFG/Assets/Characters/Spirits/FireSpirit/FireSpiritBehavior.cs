@@ -36,7 +36,18 @@ public class FireSpiritBehavior : SpiritBehavior
             {
                 case "Burnable":
                     Destroy(other.gameObject);
+                    //rebuild nav mesh surface to update the spot where the burnable object was
                     rebuildNavMesh = true;
+                    break;
+                case "Torch":
+                    //change the material of the torch
+                    other.gameObject.GetComponent<LightTorch>().meshRenderer.material = other.gameObject.GetComponent<LightTorch>().onMaterial;
+                    //activate the light/fire
+                    other.gameObject.GetComponent<LightTorch>().fireLight.SetActive(true);
+                    break;
+                case "FireActivable":
+                    other.gameObject.GetComponent<FireActivable>().activate = true;
+                    other.gameObject.GetComponent<FireActivable>().meshRenderer.material = other.gameObject.GetComponent<FireActivable>().onMaterial;
                     break;
             }
         }
@@ -51,6 +62,11 @@ public class FireSpiritBehavior : SpiritBehavior
         if (other.CompareTag("DarkTrigger"))
         {
             spiritLight.SetActive(false);
+        }
+        else if (other.CompareTag("FireActivable"))
+        {
+            other.gameObject.GetComponent<FireActivable>().activate = false;
+            other.gameObject.GetComponent<FireActivable>().meshRenderer.material = other.gameObject.GetComponent<FireActivable>().offMaterial;
         }
     }
 }
