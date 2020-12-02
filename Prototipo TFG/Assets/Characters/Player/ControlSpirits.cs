@@ -16,6 +16,7 @@ public class ControlSpirits : MonoBehaviour
     //position the player has ordered the spirit to go to
     public Vector3 goToPosition;
     private GameObject currentSpirit;
+    public GameObject aimCursor;
     
     // Start is called before the first frame update
     void Start()
@@ -48,20 +49,22 @@ public class ControlSpirits : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             aiming = true;
-            Cursor.visible = true;
+            //Cursor.visible = true;
+            aimCursor.SetActive(true);
         }
         //stop aiming
         else if (Input.GetMouseButtonUp(1))
         {
             aiming = false;
-            Cursor.visible = false;
+            //Cursor.visible = false;
+            aimCursor.SetActive(false);
         }
         //cast the ray
         if(aiming && Input.GetMouseButtonDown(0))
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, 100, ~ignoreMask))
+            if (Physics.Raycast(Camera.main.transform.position, aimCursor.transform.position - Camera.main.transform.position, out hit, 100, ~ignoreMask))
             {
                 goToPosition = hit.point;
                 currentSpirit.GetComponent<SpiritBehavior>().GoTo();
