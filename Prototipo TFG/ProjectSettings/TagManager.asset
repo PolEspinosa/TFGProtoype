@@ -15,6 +15,7 @@ TagManager:
   - Torch
   - FireActivable
   - Cursor
+  - BrokenWall
   layers:
   - Default
   - TransparentFX
