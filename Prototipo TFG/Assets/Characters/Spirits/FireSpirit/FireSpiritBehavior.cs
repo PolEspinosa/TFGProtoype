@@ -13,7 +13,7 @@ public class FireSpiritBehavior : SpiritBehavior
     {
         InitialiseValues();
         spiritLight.SetActive(false);
-        navSurface = GameObject.FindGameObjectWithTag("NavMeshSurface").GetComponent<NavMeshSurface>();
+        navSurface = GameObject.FindGameObjectWithTag("FireNavMesh").GetComponent<NavMeshSurface>();
         rebuildNavMesh = false;
     }
 
