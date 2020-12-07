@@ -28,7 +28,7 @@ public class PlatformActivation : MonoBehaviour
         {
             if(currentTime < movingTime)
             {
-                currentTime += Time.deltaTime;
+                currentTime += Time.deltaTime/2;
                 gameObject.transform.position -= gameObject.transform.forward * Time.deltaTime;
             }
         }

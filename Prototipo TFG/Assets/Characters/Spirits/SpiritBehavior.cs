@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class SpiritBehavior : MonoBehaviour
 {
-    protected NavMeshAgent navAgent;
+    public NavMeshAgent navAgent;
     protected GameObject player;
     private Vector3 target;
     public enum States { FOLLOWING, GOING}; //Follow the player/Go to where the player has said
@@ -43,7 +43,7 @@ public class SpiritBehavior : MonoBehaviour
         //if close enough to the target, wait
         if (navAgent.remainingDistance <= navAgent.stoppingDistance)
         {
-            navAgent.speed = 0;
+            
         }
         else
         {
