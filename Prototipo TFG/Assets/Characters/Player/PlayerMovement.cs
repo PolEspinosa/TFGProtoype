@@ -5,7 +5,10 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
-    public float walkSpeed;
+    public float walkSpeed, windSpeedMult;
+    private float windSpeed, currentSpeed;
+    private bool windActive; //wind spirit invoked
+    private bool earthActive; //earth spirit invoked
     public float jumpHeight;
     private float axisX, axisZ;
     private Vector3 direction, moveDirection;
@@ -15,15 +18,53 @@ public class PlayerMovement : MonoBehaviour
     public Transform cam;
     public float gravity;
     private float yStore;
+    public GameObject currentSpirit;
+    private bool pushing;
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentSpeed = walkSpeed;
+        windSpeed = walkSpeed * windSpeedMult;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (currentSpirit != null)
+        {
+            if (currentSpirit.CompareTag("EarthSpirit"))
+            {
+                earthActive = true;
+                windActive = false;
+            }
+            else if (currentSpirit.CompareTag("WindSpirit"))
+            {
+                windActive = true;
+                earthActive = false;
+            }
+            //if neither the earth spirit nor the wind spirits are invoked
+            else
+            {
+                earthActive = false;
+                windActive = false;
+            }
+        }
+        //if no spirits invoked
+        else
+        {
+            earthActive = false;
+            windActive = false;
+        }
+
+        if (windActive)
+        {
+            currentSpeed = windSpeed;
+        }
+        else
+        {
+            currentSpeed = walkSpeed;
+        }
+
         //get the input value
         axisX = Input.GetAxisRaw("Horizontal");
         axisZ = Input.GetAxisRaw("Vertical");
@@ -35,16 +76,23 @@ public class PlayerMovement : MonoBehaviour
 
         if (direction.magnitude >= 0.1f)
         {
-            //find the angle the player needs to rotate in order to face the direction is moving to
-            targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            //smooth the angle 
-            smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            //apply the rotation
-            transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
-            //set the direction to the one the camera is facing
-            moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            //move the player
-            //controller.Move(moveDirection.normalized * walkSpeed * Time.deltaTime);
+            if (!pushing)
+            {
+                //find the angle the player needs to rotate in order to face the direction is moving to
+                targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                //smooth the angle 
+                smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                //apply the rotation
+                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+                //set the direction to the one the camera is facing
+                moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                //move the player
+                //controller.Move(moveDirection.normalized * walkSpeed * Time.deltaTime);
+            }
+            else
+            {
+
+            }
         }
         //if there is no movement input, stop moving
         else
@@ -69,6 +117,15 @@ public class PlayerMovement : MonoBehaviour
         //apply gravity
         moveDirection.y += (Physics.gravity.y * gravity * Time.deltaTime);
         //move the player
-        controller.Move(moveDirection * Time.deltaTime * walkSpeed);
+        controller.Move(moveDirection * Time.deltaTime * currentSpeed);
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.CompareTag("Box") && earthActive && Input.GetKeyDown(KeyCode.E))
+        {
+            pushing = true;
+        }
     }
 }

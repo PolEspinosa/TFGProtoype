@@ -7,11 +7,12 @@ public class SpiritBehavior : MonoBehaviour
 {
     public NavMeshAgent navAgent;
     protected GameObject player;
-    private Vector3 target;
-    public enum States { FOLLOWING, GOING}; //Follow the player/Go to where the player has said
+    protected Vector3 target;
+    public enum States { FOLLOWING, GOING, WAITING}; //Follow the player/Go to where the player has said
     public States state;
     public float walkSpeed, runSpeed;
     public float stopDistance = 2f;
+    private bool waiting; //bool that will allow the spirit to leave the waiting state
     //reference to the players script
     private ControlSpirits controlSpirits;
     public GameObject targetObject; //we will store the gameobject that has collided with the raycast
@@ -24,7 +25,6 @@ public class SpiritBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         
     }
 
@@ -36,14 +36,15 @@ public class SpiritBehavior : MonoBehaviour
         state = States.FOLLOWING;
         controlSpirits = player.GetComponent<ControlSpirits>();
         targetObject = null;
+        waiting = false;
     }
 
     protected void FollowOrder()
     {
         //if close enough to the target, wait
-        if (navAgent.remainingDistance <= navAgent.stoppingDistance)
+        if (navAgent.remainingDistance <= navAgent.stoppingDistance && !waiting)
         {
-            
+            state = States.WAITING;
         }
         else
         {
@@ -54,10 +55,18 @@ public class SpiritBehavior : MonoBehaviour
             case States.FOLLOWING:
                 navAgent.speed = walkSpeed;
                 navAgent.SetDestination(player.transform.position);
+                waiting = false;
+                navAgent.isStopped = false;
                 break;
             case States.GOING:
                 navAgent.speed = runSpeed;
                 navAgent.SetDestination(controlSpirits.goToPosition);
+                waiting = false;
+                navAgent.isStopped = false;
+                break;
+            case States.WAITING:
+                navAgent.isStopped = true;
+                waiting = true;
                 break;
         }
     }

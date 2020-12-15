@@ -192,8 +192,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 7074841669074817755}
-  walkSpeed: 5
-  jumpHeight: 3
+  walkSpeed: 7
+  jumpHeight: 3.2
   turnSmoothTime: 0.1
   cam: {fileID: 0}
   gravity: 1

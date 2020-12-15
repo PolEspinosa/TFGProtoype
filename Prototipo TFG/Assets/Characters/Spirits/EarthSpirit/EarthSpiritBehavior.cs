@@ -19,6 +19,7 @@ public class EarthSpiritBehavior : SpiritBehavior
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(state);
         FollowOrder();
         if (rebuildNavMesh)
         {
@@ -27,21 +28,31 @@ public class EarthSpiritBehavior : SpiritBehavior
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == targetObject.tag)
+        {
+            switch (other.tag)
+            {
+                case "BrokenWall":
+                    Destroy(other.gameObject);
+                    rebuildNavMesh = true;
+                    break;
+            }
+        }
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if(state == States.GOING)
+        if(other.tag == targetObject.tag)
         {
             switch (other.tag)
             {
                 case "GrowFloor":
-                    if(Vector3.Distance(other.gameObject.transform.position,other.gameObject.GetComponent<GrowFloor>().newPosition) > 0)
+                    if (Vector3.Distance(other.gameObject.transform.position, other.gameObject.GetComponent<GrowFloor>().newPosition) > 0)
                     {
                         other.gameObject.transform.position += new Vector3(0, Time.deltaTime, 0);
                     }
-                    break;
-                case "BrokenWall":
-                    Destroy(other.gameObject);
-                    rebuildNavMesh = true;
                     break;
                 case "PressurePlate":
                     other.gameObject.GetComponent<PressurePlate>().activated = true;

@@ -21,14 +21,14 @@ public class PlatformActivation : MonoBehaviour
             if (currentTime > 0)
             {
                 currentTime -= Time.deltaTime;
-                gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 2;
+                gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 3;
             }
         }
         else
         {
             if(currentTime < movingTime)
             {
-                currentTime += Time.deltaTime/2;
+                currentTime += Time.deltaTime/3;
                 gameObject.transform.position -= gameObject.transform.forward * Time.deltaTime;
             }
         }
