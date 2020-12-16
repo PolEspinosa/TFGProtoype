@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private bool pushing;
     private GameObject movingObject; //object the player is currently moving
     private bool facedBox; //set the rotation of the player to always face the box if he is pushing it
+    private bool inRange; //determines whether the player is in range
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
         movingObject = null;
         pushSpeed = walkSpeed * 0.5f;
         facedBox = false;
+        inRange = false;
     }
 
     // Update is called once per frame
@@ -92,8 +94,6 @@ public class PlayerMovement : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
                 //set the direction to the one the camera is facing
                 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-                //move the player
-                //controller.Move(moveDirection.normalized * walkSpeed * Time.deltaTime);
             }
             else
             {
@@ -128,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
 
         //use the not normalized Y value for the jump
         moveDirection.y = yStore;
-
+        
         //if the player is on the ground
         if (controller.isGrounded)
         {
@@ -136,45 +136,78 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.y = 0;
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                moveDirection.y = jumpHeight;
+                if (windActive)
+                {
+                    moveDirection.y = jumpHeight / windSpeedMult;
+                }
+                else
+                {
+                    moveDirection.y = jumpHeight;
+                }
             }
         }
         //apply gravity
-        moveDirection.y += (Physics.gravity.y * gravity * Time.deltaTime);
+        if (windActive)
+        {
+            moveDirection.y += (Physics.gravity.y * gravity * Time.deltaTime) / windSpeedMult;
+        }
+        else
+        {
+            moveDirection.y += (Physics.gravity.y * gravity * Time.deltaTime);
+        }
+        
         //move the player
         controller.Move(moveDirection * Time.deltaTime * currentSpeed);
-
+        Debug.Log("P: " + pushing);
+        Debug.Log("R: " + inRange);
+        if (inRange)
+        {
+            if(earthActive && Input.GetKey(KeyCode.E))
+            {
+                pushing = true;
+            }
+            else
+            {
+                if (movingObject != null)
+                {
+                    pushing = false;
+                    movingObject.transform.parent = null;
+                    movingObject = null;
+                    gameObject.transform.LookAt(null);
+                    facedBox = false;
+                }
+            }
+        }
 
         if (pushing)
         {
             MoveBox();
         }
-        
     }
 
 
     private void OnTriggerStay(Collider other)
     {
-        //if in range of a box and using right input
-        
-        if(other.CompareTag("Box") && earthActive && Input.GetKey(KeyCode.E))
+        //if in range of a box
+        if(other.CompareTag("Box"))
         {
-            pushing = true;
+            inRange = true;
             movingObject = other.gameObject;
-            
         }
-        else
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        //if the player has leaved the box
+        if (other.CompareTag("Box"))
         {
-            pushing = false;
-            movingObject.transform.parent = null;
-            movingObject = null;
-            gameObject.transform.LookAt(null);
-            facedBox = false;
+            inRange = false;
         }
     }
 
     private void MoveBox()
     {
+        //if the player wasn't facing the cube, rotate the player so it is facing the cube
         if (!facedBox)
         {
             facedBox = true;
@@ -204,7 +237,6 @@ public class PlayerMovement : MonoBehaviour
             gameObject.transform.LookAt(new Vector3(movingObject.transform.position.x, gameObject.transform.position.y, movingObject.transform.position.z));
             gameObject.transform.parent = null;
         }
-
         currentSpeed = pushSpeed;
         movingObject.transform.parent = gameObject.transform;
     }

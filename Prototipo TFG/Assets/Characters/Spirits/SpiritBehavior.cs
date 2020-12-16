@@ -41,15 +41,6 @@ public class SpiritBehavior : MonoBehaviour
 
     protected void FollowOrder()
     {
-        //if close enough to the target, wait
-        if (navAgent.remainingDistance <= navAgent.stoppingDistance && !waiting)
-        {
-            state = States.WAITING;
-        }
-        else
-        {
-            navAgent.speed = walkSpeed;
-        }
         switch (state)
         {
             case States.FOLLOWING:
@@ -63,10 +54,6 @@ public class SpiritBehavior : MonoBehaviour
                 navAgent.SetDestination(controlSpirits.goToPosition);
                 waiting = false;
                 navAgent.isStopped = false;
-                break;
-            case States.WAITING:
-                navAgent.isStopped = true;
-                waiting = true;
                 break;
         }
     }
