@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
-    public float walkSpeed, windSpeedMult;
+    public float walkSpeed, windSpeedMult, pushSpeed;
     private float windSpeed, currentSpeed;
     private bool windActive; //wind spirit invoked
     private bool earthActive; //earth spirit invoked
@@ -20,11 +20,16 @@ public class PlayerMovement : MonoBehaviour
     private float yStore;
     public GameObject currentSpirit;
     private bool pushing;
+    private GameObject movingObject; //object the player is currently moving
+    private bool facedBox; //set the rotation of the player to always face the box if he is pushing it
     // Start is called before the first frame update
     void Start()
     {
         currentSpeed = walkSpeed;
         windSpeed = walkSpeed * windSpeedMult;
+        movingObject = null;
+        pushSpeed = walkSpeed * 0.5f;
+        facedBox = false;
     }
 
     // Update is called once per frame
@@ -76,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (direction.magnitude >= 0.1f)
         {
+            //don't apply rotation if the player is moving a box
             if (!pushing)
             {
                 //find the angle the player needs to rotate in order to face the direction is moving to
@@ -91,7 +97,26 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-
+                //move backwards with the box
+                if (axisZ < 0)
+                {
+                    moveDirection = -gameObject.transform.forward;
+                }
+                //move forward with the box
+                else if(axisZ > 0)
+                {
+                    moveDirection = gameObject.transform.forward;
+                }
+                //move right with the box
+                else if(axisX > 0)
+                {
+                    moveDirection = gameObject.transform.right;
+                }
+                //move left with the box
+                else if (axisX < 0)
+                {
+                    moveDirection = -gameObject.transform.right;
+                }
             }
         }
         //if there is no movement input, stop moving
@@ -118,14 +143,69 @@ public class PlayerMovement : MonoBehaviour
         moveDirection.y += (Physics.gravity.y * gravity * Time.deltaTime);
         //move the player
         controller.Move(moveDirection * Time.deltaTime * currentSpeed);
+
+
+        if (pushing)
+        {
+            MoveBox();
+        }
+        
     }
 
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Box") && earthActive && Input.GetKeyDown(KeyCode.E))
+        //if in range of a box and using right input
+        
+        if(other.CompareTag("Box") && earthActive && Input.GetKey(KeyCode.E))
         {
             pushing = true;
+            movingObject = other.gameObject;
+            
         }
+        else
+        {
+            pushing = false;
+            movingObject.transform.parent = null;
+            movingObject = null;
+            gameObject.transform.LookAt(null);
+            facedBox = false;
+        }
+    }
+
+    private void MoveBox()
+    {
+        if (!facedBox)
+        {
+            facedBox = true;
+            Vector3 facedDirection;
+            facedDirection = movingObject.transform.position - gameObject.transform.position;
+            gameObject.transform.parent = movingObject.transform;
+            //the player faces the front face of the box
+            if (facedDirection.z < -0.9)
+            {
+                gameObject.transform.localPosition = new Vector3(0, 0, 1);
+            }
+            //the player faces the back face of the box
+            else if (facedDirection.z > 0.9)
+            {
+                gameObject.transform.localPosition = new Vector3(0, 0, -1);
+            }
+            //the player faces the left face of the box
+            else if (facedDirection.x < -0.9)
+            {
+                gameObject.transform.localPosition = new Vector3(1, 0, 0);
+            }
+            //the player faces the left face of the box
+            else if (facedDirection.x > 0.9)
+            {
+                gameObject.transform.localPosition = new Vector3(-1, 0, 0);
+            }
+            gameObject.transform.LookAt(new Vector3(movingObject.transform.position.x, gameObject.transform.position.y, movingObject.transform.position.z));
+            gameObject.transform.parent = null;
+        }
+
+        currentSpeed = pushSpeed;
+        movingObject.transform.parent = gameObject.transform;
     }
 }
