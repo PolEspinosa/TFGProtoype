@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
-    public float walkSpeed, windSpeedMult;
+    public float walkSpeed, windSpeedMult, pushSpeed;
     private float windSpeed, currentSpeed;
     private bool windActive; //wind spirit invoked
     private bool earthActive; //earth spirit invoked
@@ -20,11 +20,14 @@ public class PlayerMovement : MonoBehaviour
     private float yStore;
     public GameObject currentSpirit;
     private bool pushing;
+    private GameObject movingObject; //object the player is currently moving
     // Start is called before the first frame update
     void Start()
     {
         currentSpeed = walkSpeed;
         windSpeed = walkSpeed * windSpeedMult;
+        movingObject = null;
+        pushSpeed = walkSpeed * 0.7f;
     }
 
     // Update is called once per frame
@@ -76,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (direction.magnitude >= 0.1f)
         {
+            //don't apply rotation if the player is moving a box
             if (!pushing)
             {
                 //find the angle the player needs to rotate in order to face the direction is moving to
@@ -91,7 +95,26 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-
+                //move backwards with the box
+                if (axisZ < 0)
+                {
+                    moveDirection = -gameObject.transform.forward;
+                }
+                //move forward with the box
+                else if(axisZ > 0)
+                {
+                    moveDirection = gameObject.transform.forward;
+                }
+                //move right with the box
+                else if(axisX > 0)
+                {
+                    moveDirection = gameObject.transform.right;
+                }
+                //move left with the box
+                else if (axisX < 0)
+                {
+                    moveDirection = -gameObject.transform.right;
+                }
             }
         }
         //if there is no movement input, stop moving
@@ -118,14 +141,27 @@ public class PlayerMovement : MonoBehaviour
         moveDirection.y += (Physics.gravity.y * gravity * Time.deltaTime);
         //move the player
         controller.Move(moveDirection * Time.deltaTime * currentSpeed);
+        
+        
     }
 
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Box") && earthActive && Input.GetKeyDown(KeyCode.E))
+        //if in range of a box and using right input
+        if(other.CompareTag("Box") && earthActive && Input.GetKey(KeyCode.E))
         {
             pushing = true;
+            currentSpeed = pushSpeed;
+            movingObject = other.gameObject;
+            movingObject.transform.parent = gameObject.transform;
+        }
+        else
+        {
+            pushing = false;
+            movingObject.transform.parent = null;
+            movingObject = null;
+            
         }
     }
 }
