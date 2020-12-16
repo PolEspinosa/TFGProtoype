@@ -6,26 +6,26 @@ using UnityEngine.AI;
 public class FireSpiritBehavior : SpiritBehavior
 {
     public GameObject spiritLight;
-    private NavMeshSurface navSurface;
-    private bool rebuildNavMesh;
+    //private NavMeshSurface navSurface;
+    //private bool rebuildNavMesh;
     // Start is called before the first frame update
     void Start()
     {
-        InitialiseValues();
+        //InitialiseValues();
         spiritLight.SetActive(false);
-        navSurface = GameObject.FindGameObjectWithTag("NavMeshSurface").GetComponent<NavMeshSurface>();
-        rebuildNavMesh = false;
+        //navSurface = GameObject.FindGameObjectWithTag("FireNavMesh").GetComponent<NavMeshSurface>();
+        //rebuildNavMesh = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        FollowOrder();
-        if (rebuildNavMesh)
-        {
-            navSurface.BuildNavMesh();
-            rebuildNavMesh = false;
-        }
+        //FollowOrder();
+        //if (rebuildNavMesh)
+        //{
+            //navSurface.BuildNavMesh();
+            //rebuildNavMesh = false;
+        //}
     }
 
     private void OnTriggerEnter(Collider other)
@@ -37,7 +37,7 @@ public class FireSpiritBehavior : SpiritBehavior
                 case "Burnable":
                     Destroy(other.gameObject);
                     //rebuild nav mesh surface to update the spot where the burnable object was
-                    rebuildNavMesh = true;
+                    //rebuildNavMesh = true;
                     break;
                 case "Torch":
                     //change the material of the torch

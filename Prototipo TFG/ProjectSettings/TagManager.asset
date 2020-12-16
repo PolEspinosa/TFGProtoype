@@ -11,10 +11,14 @@ TagManager:
   - GrowFloor
   - DarkTrigger
   - Burnable
-  - NavMeshSurface
   - Torch
   - FireActivable
   - Cursor
+  - BrokenWall
+  - EarthNavMesh
+  - FireNavMesh
+  - PressurePlate
+  - Box
   layers:
   - Default
   - TransparentFX
