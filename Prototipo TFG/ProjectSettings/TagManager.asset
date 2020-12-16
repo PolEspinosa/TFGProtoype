@@ -18,6 +18,7 @@ TagManager:
   - EarthNavMesh
   - FireNavMesh
   - PressurePlate
+  - Box
   layers:
   - Default
   - TransparentFX

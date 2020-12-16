@@ -12,7 +12,7 @@ public class ControlSpirits : MonoBehaviour
     private GameObject fireSpiritClone, waterSpiritClone, earthSpiritClone, windSpiritClone;
     public Transform spiritInvokingPosition;
     public bool aiming;
-    private RaycastHit hit;
+    public RaycastHit hit;
     private Ray ray;
     //position the player has ordered the spirit to go to
     public Vector3 goToPosition;
@@ -90,6 +90,7 @@ public class ControlSpirits : MonoBehaviour
             else if (_cloneSpirit3 != null) Destroy(_cloneSpirit3);
             else if (_cloneSpirit4 != null) Destroy(_cloneSpirit4);
             currentSpirit = _cloneSpirit;
+            gameObject.GetComponent<PlayerMovement>().currentSpirit = _cloneSpirit;
         }
         else
         {
